@@ -1,0 +1,20 @@
+[
+  {
+    "id": "uogQAZnLcAlT6lMuNbpQg",
+    "email": "irick@gmail.com",
+    "password": "123456",
+    "companyId": "pVbRRBQtMVw6lUAkj1k43"
+  },
+  {
+    "id": "i0Nn6qvicHP5DTuKTyaq0",
+    "email": "harry@gmail.com",
+    "password": "potter123456",
+    "companyId": "wvdB54Gqbdp_NZTXK9Tue"
+  },
+  {
+    "id": "YQ7tvwWNlciBgaM6TIKCu",
+    "email": "frodo@gmail.com",
+    "password": "123456",
+    "companyId": "wvdB54Gqbdp_NZTXK9Tue"
+  }
+]
