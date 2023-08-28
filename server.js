@@ -1,51 +1,34 @@
-import { ApolloServer } from "apollo-server-express";
-import cors from "cors";
-import express from "express";
-import { expressjwt } from "express-jwt";
-import { readFile } from "fs/promises";
-import jwt from "jsonwebtoken";
-import { User } from "./db.js";
-import { resolvers } from "./resolvers.js";
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import cors from 'cors';
+import express from 'express';
+import { authMiddleware, handleLogin } from './auth.js';
+import { resolvers } from './resolvers.js';
+import { readFile } from 'fs/promises';
 
 const PORT = 9000;
-const JWT_SECRET = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
 
 const app = express();
 app.use(
   cors(),
+  /** middleware parsing json string into JS object */
   express.json(),
-  expressjwt({
-    algorithms: ["HS256"],
-    credentialsRequired: false,
-    secret: JWT_SECRET,
-  })
+  authMiddleware
 );
 
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne((user) => user.email === email);
-  if (user && user.password === password) {
-    const token = jwt.sign({ sub: user.id }, JWT_SECRET);
-    res.json({ token, id: user.id, companyId: user.companyId });
-  } else {
-    res.sendStatus(401);
-  }
-});
+app.post('/login', handleLogin);
 
-const typeDefs = await readFile("./schema.graphql", "utf8");
+const typeDefs = await readFile('./schema.graphql', 'utf-8');
 
-const context = async ({ req }) => {
-  if (req.auth) {
-    const user = await User.findById(req.auth.sub);
-    return { user };
-  }
-  return {};
-};
+/** create instance of apollo server */
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
+/** Run apollo server */
 await apolloServer.start();
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+
+/** apply expressMiddleware to a specific path */
+app.use('/graphql', expressMiddleware(apolloServer));
 
 app.listen({ port: PORT }, () => {
-  console.log('Server running...');
+  console.log(`Server running on port ${PORT}`);
 });

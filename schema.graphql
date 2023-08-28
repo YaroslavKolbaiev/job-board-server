@@ -1,53 +1,55 @@
 type Query {
-  job(id: ID!): Job
-  company(id: ID!): Company
-  jobs: [Job]
-  users: [User]
-}
-
-type Mutation {
-  createJob(input: CreateJobInput!): Job
-  createUser(input: CreateUserInput!): User
-  updateJob(input: UpdateJobInput!): Job
-  deleteJob(id: ID!): Job
-}
-
-type Company {
-  id: ID!
-  name: String!
-  description: String
+  # job: Job
+  # company(id: ID!): Company
+  # if ! is provided null can not be returned
   jobs: [Job!]
-}
-
-type User {
-  id: ID!
-  email: String!
-  companyId: String!
-  company: Company
-  jobs: [Job]
+  # users: [User]
 }
 
 type Job {
   id: ID!
   title: String!
-  companyId: String!
-  company: Company
+  #   companyId: String!
+  #   company: Company
   description: String
+  date: String!
 }
 
-input CreateJobInput {
-  title: String!
-  description: String
-}
+# type Mutation {
+#   createJob(input: CreateJobInput!): Job
+#   createUser(input: CreateUserInput!): User
+#   updateJob(input: UpdateJobInput!): Job
+#   deleteJob(id: ID!): Job
+# }
 
-input CreateUserInput {
-  email: String!
-  password: String!
-  companyId: String!
-}
+# type Company {
+#   id: ID!
+#   name: String!
+#   description: String
+#   jobs: [Job!]
+# }
 
-input UpdateJobInput {
-  id: ID!
-  title: String!
-  description: String
-}
+# type User {
+#   id: ID!
+#   email: String!
+#   companyId: String!
+#   company: Company
+#   jobs: [Job]
+# }
+
+# input CreateJobInput {
+#   title: String!
+#   description: String
+# }
+
+# input CreateUserInput {
+#   email: String!
+#   password: String!
+#   companyId: String!
+# }
+
+# input UpdateJobInput {
+#   id: ID!
+#   title: String!
+#   description: String
+# }
