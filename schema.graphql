@@ -1,15 +1,31 @@
 type Query {
   job(id: ID!): Job
   company(id: ID!): Company
-  jobs: [Job]
-  users: [User]
+  jobs(limit: Int, offset: Int): JobSublist
+}
+
+type JobSublist {
+  jobs: [Job!]
+  totalItems: Int!
 }
 
 type Mutation {
-  createJob(input: CreateJobInput!): Job
-  createUser(input: CreateUserInput!): User
-  updateJob(input: UpdateJobInput!): Job
+  createNewJob(input: CreateJobInput!): Job
   deleteJob(id: ID!): Job
+  updateJob(input: UpdateJobInput!): Job
+  #   createUser(input: CreateUserInput!): User
+}
+
+"""
+Represets Job posted to uor board
+"""
+type Job {
+  id: ID!
+  title: String!
+  companyId: String
+  company: Company
+  description: String
+  date: String!
 }
 
 type Company {
@@ -19,31 +35,9 @@ type Company {
   jobs: [Job!]
 }
 
-type User {
-  id: ID!
-  email: String!
-  companyId: String!
-  company: Company
-  jobs: [Job]
-}
-
-type Job {
-  id: ID!
-  title: String!
-  companyId: String!
-  company: Company
-  description: String
-}
-
 input CreateJobInput {
   title: String!
   description: String
-}
-
-input CreateUserInput {
-  email: String!
-  password: String!
-  companyId: String!
 }
 
 input UpdateJobInput {
@@ -51,3 +45,17 @@ input UpdateJobInput {
   title: String!
   description: String
 }
+
+# type User {
+#   id: ID!
+#   email: String!
+#   companyId: String!
+#   company: Company
+#   jobs: [Job]
+# }
+
+# input CreateUserInput {
+#   email: String!
+#   password: String!
+#   companyId: String!
+# }
